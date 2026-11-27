@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>ザイポチ｜DIY材料の必要量計算 - 壁紙・塗料・砂利・コンクリート</title>
+<meta name="description" content="壁紙・塗料・砂利・コンクリート・フローリング・タイル・人工芝・漆喰の必要量を、面積や寸法を入れるだけで計算。買い物メモ付きで材料の買い忘れ・買いすぎを防ぎます。登録不要・無料。">
+<meta property="og:title" content="ザイポチ｜DIY材料の必要量計算">
+<meta property="og:description" content="壁紙・塗料・砂利・コンクリート・フローリング・タイル・人工芝・漆喰の必要量をポチッと計算。買い物メモ付き、登録不要・無料。">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:,">
+<style>
+:root{
+--teal:#0d6e63; --teal-dark:#0a554c; --teal-light:#e6f4f1; --teal-mid:#cdeae4;
+--ink:#1c2422; --ink-sub:#5a6663; --line:#e3e8e6; --bg:#fbfcfc; --card:#ffffff;
+--accent:#e8873a; --warn-bg:#fff8ec;
+--radius:14px; --shadow:0 2px 14px rgba(13,80,72,.08),0 1px 3px rgba(13,80,72,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",-apple-system,"Segoe UI",sans-serif;line-height:1.65;font-size:16px;-webkit-text-size-adjust:100%}
+button,[role="button"],select,summary,input:not([type="checkbox"],[type="radio"]){min-height:44px}
+a{color:var(--teal)}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px}
+/* header */
+header.site{padding:22px 0 6px}
+.logo{font-size:30px;font-weight:900;letter-spacing:.04em;color:var(--teal-dark);line-height:1.1}
+.logo span{color:var(--accent)}
+.tagline{margin:6px 0 0;color:var(--ink-sub);font-size:14px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.badge{font-size:12px;font-weight:700;background:var(--teal-light);color:var(--teal-dark);border-radius:999px;padding:4px 10px}
+/* ad */
+.adslot{border:1.5px dashed #b9c6c2;border-radius:10px;background:#f2f5f4;color:#8a9793;text-align:center;font-size:12px;letter-spacing:.15em;padding:18px 8px;margin:16px 0}
+/* nav cards */
+.navgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0 6px}
+@media(min-width:640px){.navgrid{grid-template-columns:repeat(4,1fr)}}
+.navcard{display:block;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:var(--radius);padding:14px 12px;cursor:pointer;box-shadow:var(--shadow);font-family:inherit;width:100%}
+.navcard.ic{font-size:24px;line-height:1}
+.navcard.nm{font-weight:800;font-size:16px;margin-top:6px;color:var(--ink)}
+.navcard.kw{font-size:11.5px;color:var(--ink-sub);margin-top:2px}
+.navcard.active{border-color:var(--teal);background:var(--teal-light)}
+/* panels */
+.panel{display:none;background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:22px 18px 20px;margin:18px 0}
+.panel.active{display:block}
+.panel h2{font-size:22px;margin:0 0 4px;color:var(--teal-dark)}
+.panel.lead{color:var(--ink-sub);font-size:14px;margin:0 0 16px}
+fieldset{border:none;padding:0;margin:0 0 14px}
+legend{font-weight:800;font-size:13px;color:var(--teal-dark);margin-bottom:8px;padding:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.grid2{grid-template-columns:1fr 1fr}}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:4px}
+.field.unit{color:var(--ink-sub);font-weight:400;font-size:12px}
+.field input,.field select{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-size:17px;background:#fff;color:var(--ink);font-family:inherit}
+.field input:focus,.field select:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
+.hint{font-size:12px;color:var(--ink-sub);margin-top:4px}
+/* result */
+.result{background:var(--teal-light);border-radius:14px;padding:16px;margin:18px 0 0}
+.result h3{margin:0 0 10px;font-size:14px;color:var(--teal-dark);letter-spacing:.05em}
+.rrow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px dashed var(--teal-mid)}
+.rrow:last-of-type{border-bottom:none}
+.rrow.k{font-size:14px}
+.rrow.v{font-weight:900;font-size:20px;color:var(--teal-dark);white-space:nowrap}
+.rrow.v small{font-size:13px;font-weight:700}
+.rnote{font-size:12.5px;color:var(--ink-sub);margin:10px 0 0}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btn{border:none;border-radius:10px;padding:12px 18px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;min-height:48px}
+.btn-copy{background:var(--teal);color:#fff}
+.btn-copy:active{background:var(--teal-dark)}
+.btn-shop{background:#fff;border:2px solid var(--accent);color:#b35f14;text-decoration:none;display:inline-flex;align-items:center}
+.copied{font-size:13px;color:var(--teal-dark);font-weight:700;align-self:center}
+/* basis */
+.basis{margin-top:18px;background:var(--warn-bg);border-radius:12px;padding:14px 16px;font-size:13.5px}
+.basis h3{margin:0 0 6px;font-size:14px;color:#8a5a12}
+.basis p{margin:0 0 6px}.basis p:last-child{margin:0}
+.basis ul{margin:4px 0;padding-left:18px}
+/* sections text */
+.textsec{margin:26px 0}
+.textsec h2{font-size:19px;color:var(--teal-dark);border-bottom:3px solid var(--teal-mid);padding-bottom:6px}
+.textsec p,.textsec li{font-size:14.5px}
+footer.site{margin-top:36px;border-top:1px solid var(--line);padding:20px 0 40px;color:var(--ink-sub);font-size:12.5px}
+footer.site p{margin:0 0 8px}
+.top-link{display:inline-block;margin-top:8px;font-size:13px;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="site">
+<div class="logo">ザイ<span>ポチ</span></div>
+<p class="tagline">DIY・リフォーム材料の必要量を、ポチッと計算。寸法や面積を入れるだけで、買う量の目安がすぐ分かります。</p>
+<div class="badges"><span class="badge">登録不要</span><span class="badge">無料</span><span class="badge">入力は保存されません</span></div>
+</header>
+
+<div class="adslot">広告スペース</div>
+
+<nav class="navgrid" id="navgrid" aria-label="計算機一覧"></nav>
+
+<!-- 1 壁紙 -->
+<section class="panel" id="panel-wallpaper">
+<h2>🧻 壁紙（クロス）必要量計算</h2>
+<p class="lead">部屋の大きさから、壁紙の巾数と必要メートル数を計算します。</p>
+<div class="grid2">
+<div class="field"><label>部屋の幅 <span class="unit">m</span></label><input type="number" id="wp-w" value="3.6" step="0.1" min="0" inputmode="decimal"></div>
+<div class="field"><label>部屋の奥行 <span class="unit">m</span></label><input type="number" id="wp-d" value="2.7" step="0.1" min="0" inputmode="decimal"></div>
+<div class="field"><label>天井高 <span class="unit">m</span></label><input type="number" id="wp-h" value="2.4" step="0.05" min="0" inputmode="decimal"></div>
+<div class="field"><label>壁の横幅合計 <span class="unit">m（任意）</span></label><input type="number" id="wp-total" placeholder="空欄なら周長で計算" step="0.1" min="0" inputmode="decimal"><div class="hint">一部だけ貼る場合はこちらに入力</div></div>
+<div class="field"><label>壁紙の幅</label><select id="wp-width"><option value="0.92" selected>92cm（一般的）</option><option value="0.90">90cm</option></select></div>
+<div class="field"><label>ロス率 <span class="unit">%</span></label><input type="number" id="wp-loss" value="10" step="1" min="0" inputmode="decimal"></div>
+<div class="field"><label>ロール長 <span class="unit">m／本</span></label><input type="number" id="wp-roll" value="50" step="1" min="1" inputmode="decimal"><div class="hint">50m巻が多いという目安です</div></div>
+</div>
+<div class="result">
+<h3>計算結果（目安）</h3>
+<div class="rrow"><span class="k">壁の周長</span><span class="v" id="wp-r-perim">–</span></div>
+<div class="rrow"><span class="k">必要な巾数</span><span class="v" id="wp-r-count">–</span></div>
+<div class="rrow"><span class="k">1巾の長さ（天井高＋10cm）</span><span class="v" id="wp-r-len">–</span></div>
+<div class="rrow"><span class="k">必要メートル数（ロス込み）</span><span class="v" id="wp-r-m">–</span></div>
+<div class="rrow"><span class="k">ロール本数</span><span class="v" id="wp-r-roll">–</span></div>
+<div class="actions">
+<button class="btn btn-copy" data-copy="wallpaper">📋 買い物メモをコピー</button>
+<a class="btn btn-shop" href="https://search.rakuten.co.jp/search/mall/%E5%A3%81%E7%B4%99%20%E3%81%AE%E3%82%8A%E4%BB%98%E3%81%8D/" target="_blank" rel="noopener sponsored">楽天市場で「壁紙 のり付き」を探す</a>
+<span class="copied" id="copied-wallpaper"></span>
+</div>
+</div>
+<div class="basis"><h3>計算の根拠・目安</h3>
+<p>壁の周長 ÷ 壁紙の幅（切り上げ）＝巾数。1巾の長さは天井高に上下の切りしろ10cmを加えています。必要m数＝巾数 × 1巾の長さ ×（1＋ロス率）。</p>
+<p>柄合わせが必要な壁紙はロスが増えるため、ロス率15〜20%で見積もるのが無難です。窓・ドアが多い壁は実際より多めに出ます。数値はすべて目安です。購入前に製品ラベルの表示と施工説明を必ず確認してください。</p>
+</div>
+</section>
+
+<!-- 2 塗料 -->
+<section class="panel" id="panel-paint">
+<h2>🎨 塗料 必要量計算</h2>
+<p class="lead">塗る面積と塗り回数から、必要な塗料の量と缶の組み合わせ目安を計算します。</p>
+<div class="grid2">
+<div class="field"><label>塗る面積 <span class="unit">㎡</span></label><input type="number" id="pt-area" value="20" step="1" min="0" inputmode="decimal"></div>
+<div class="field"><label>塗り回数</label><select id="pt-coats"><option value="1">1回塗り</option><option value="2" selected>2回塗り</option></select></div>
+<div class="field"><label>塗料タイプ</label><select id="pt-type">
+<option value="7.5">壁用（1回塗り中心・約7.5㎡/L）</option>
+<option value="6" selected>多用途（2回塗り前提・約6㎡/L）</option>
+<option value="custom">カスタム（㎡/Lを入力）</option></select></div>
+<div class="field"><label>カスタム塗布量 <span class="unit">㎡/L</span></label><input type="number" id="pt-custom" value="8" step="0.5" min="0.1" inputmode="decimal"></div>
+</div>
+<div class="result">
+<h3>計算結果（目安）</h3>
+<div class="rrow"><span class="k">必要量</span><span class="v" id="pt-r-l">–</span></div>
+<div class="rrow"><span class="k">缶の組み合わせ目安</span><span class="v" id="pt-r-cans" style="font-size:16px">–</span></div>
+<p class="rnote">缶サイズは 0.7L / 1.6L / 3L / 7L / 14L から、必要量を満たす組み合わせの目安です。</p>
+<div class="actions">
+<button class="btn btn-copy" data-copy="paint">📋 買い物メモをコピー</button>
+<a class="btn btn-shop" href="https://search.rakuten.co.jp/search/mall/%E5%A1%97%E6%96%99%20%E5%A3%81%E7%94%A8/" target="_blank" rel="noopener sponsored">楽天市場で「塗料 壁用」を探す</a>
+<span class="copied" id="copied-paint"></span>
+</div>
+</div>
+<div class="basis"><h3>計算の根拠・目安</h3>
+<p>必要量（L）＝塗る面積 ÷ 塗布量（㎡/L）× 塗り回数。プリセットの塗布量はアサヒペン公式の公表値からの換算です（壁用 約7.5㎡/L、多用途 約6㎡/L）。</p>
+<p>下地の吸い込みや色の濃淡で実際の塗布量は変わります。下塗り（シーラー）を使う場合は別途必要です。数値はすべて目安です。購入前に製品ラベルの塗布量表示を必ず優先してください。</p>
+</div>
+</section>
+
+<!-- 3 砂利 -->
+<section class="panel" id="panel-gravel">
+<h2>🪨 砂利 必要量計算</h2>
+<p class="lead">敷く面積と厚みから、砂利の必要重量と袋数を計算します。</p>
+<div class="grid2">
+<div class="field"><label>面積 <span class="unit">㎡</span></label><input type="number" id="gv-area" value="10" step="1" min="0" inputmode="decimal"></div>
+<div class="field"><label>厚み <span class="unit">cm</span></label><input type="number" id="gv-thick" value="5" step="1" min="0" inputmode="decimal"><div class="hint">防草目的は3〜5cmが目安</div></div>
+<div class="field"><label>かさ比重</label><select id="gv-density"><option value="1500">1500 kg/㎥（軽め）</option><option value="1600" selected>1600 kg/㎥（標準）</option><option value="1700">1700 kg/㎥（重め）</option></select></div>
+<div class="field"><label>1袋の重さ <span class="unit">kg</span></label><input type="number" id="gv-bag" value="20" step="1" min="1" inputmode="decimal"></div>
+</div>
+<div class="result">
+<h3>計算結果（目安）</h3>
+<div class="rrow"><span class="k">必要体積</span><span class="v" id="gv-r-vol">–</span></div>
+<div class="rrow"><span class="k">必要重量</span><span class="v" id="gv-r-kg">–</span></div>
+<div class="rrow"><span class="k">袋数</span><span class="v" id="gv-r-bags">–</span></div>
+<div class="actions">
+<button class="btn btn-copy" data-copy="gravel">📋 買い物メモをコピー</button>
+<a class="btn btn-shop" href="https://search.rakuten.co.jp/search/mall/%E7%A0%82%E5%88%A9%2020kg/" target="_blank" rel="noopener sponsored">楽天市場で「砂利 20kg」を探す</a>
+<span class="copied" id="copied-gravel"></span>
+</div>
+</div>
+<div class="basis"><h3>計算の根拠・目安</h3>
+<p>必要重量 ＝ 面積（㎡）× 厚み（m）× かさ比重（kg/㎥）。砂利の種類や粒の大きさで比重は変わります。敷くと沈み込む分も見て、1〜2袋多めの購入が安心です。</p>
+<p>大量になる場合は袋買いより、ダンプでの配達やホームセンターの量り売りの方が安くなることがあります。数値はすべて目安です。製品表示を優先してください。</p>
+</div>
+</section>
+
+<!-- 4 コンクリート -->
+<section class="panel" id="panel-concrete">
+<h2>🧱 コンクリート 必要量計算</h2>
+<p class="lead">型枠の大きさから体積と、インスタントコンクリートの袋数を計算します。</p>
+<div class="grid2">
+<div class="field"><label>縦 <span class="unit">m</span></label><input type="number" id="cc-l" value="2" step="0.1" min="0" inputmode="decimal"></div>
+<div class="field"><label>横 <span class="unit">m</span></label><input type="number" id="cc-w" value="1" step="0.1" min="0" inputmode="decimal"></div>
+<div class="field"><label>厚み <span class="unit">cm</span></label><input type="number" id="cc-t" value="10" step="1" min="0" inputmode="decimal"></div>
+<div class="field"><label>1袋の練り上がり量 <span class="unit">L／袋</span></label><input type="number" id="cc-yield" value="13" step="0.5" min="1" inputmode="decimal"><div class="hint">25kg袋で約13Lが目安</div></div>
+</div>
+<div class="result">
+<h3>計算結果（目安・ロス10%込み）</h3>
+<div class="rrow"><span class="k">体積</span><span class="v" id="cc-r-m3">–</span></div>
+<div class="rrow"><span class="k">体積（リットル）</span><span class="v" id="cc-r-l">–</span></div>
+<div class="rrow"><span class="k">25kg袋の数</span><span class="v" id="cc-r-bags">–</span></div>
+<p class="rnote">生コンクリートを注文する場合は、この㎥数が発注量の目安になります（最低注文量は業者に確認を）。</p>
+<div class="actions">
+<button class="btn btn-copy" data-copy="concrete">📋 買い物メモをコピー</button>
+<a class="btn btn-shop" href="https://search.rakuten.co.jp/search/mall/%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%88%E3%82%B3%E3%83%B3%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%88%2025kg/" target="_blank" rel="noopener sponsored">楽天市場で「インスタントコンクリート」を探す</a>
+<span class="copied" id="copied-concrete"></span>
+</div>
+</div>
+<div class="basis"><h3>計算の根拠・目安</h3>
+<p>体積 ＝ 縦 × 横 × 厚み。袋数はロス10%を加えた体積 ÷ 1袋の練り上がり量（初期値：25kg袋で約13L）で切り上げています。</p>
+<p>袋数が多い作業（目安30袋以上）は、生コンの配達の方が安く・楽になる場合があります。数値はすべて目安です。製品ラベルの練り上がり量表示を優先してください。</p>
+</div>
+</section>
+
+<!-- 5 フローリング -->
+<section class="panel" id="panel-flooring">
+<h2>🪵 フローリング 必要量計算</h2>
+<p class="lead">施工面積から、フローリング材の必要ケース数を計算します。</p>
+<div class="grid2">
+<div class="field"><label>施工面積 <span class="unit">㎡</span></label><input type="number" id="fl-area" value="10" step="0.5" min="0" inputmode="decimal"><div class="hint">6畳≒9.9㎡／8畳≒13.2㎡</div></div>
+<div class="field"><label>1ケースの施工面積 <span class="unit">㎡</span></label><input type="number" id="fl-case" value="3.3" step="0.1" min="0.1" inputmode="decimal"><div class="hint">1坪タイプは3.3㎡が多い目安</div></div>
+<div class="field"><label>ロス率 <span class="unit">%</span></label><input type="number" id="fl-loss" value="10" step="1" min="0" inputmode="decimal"></div>
+</div>
+<div class="result">
+<h3>計算結果（目安）</h3>
+<div class="rrow"><span class="k">必要面積（ロス込み）</span><span class="v" id="fl-r-area">–</span></div>
+<div class="rrow"><span class="k">必要ケース数</span><span class="v" id="fl-r-cases">–</span></div>
+<div class="actions">
+<button class="btn btn-copy" data-copy="flooring">📋 買い物メモをコピー</button>
+<a class="btn btn-shop" href="https://search.rakuten.co.jp/search/mall/%E3%83%95%E3%83%AD%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%20%E5%BA%8A%E6%9D%90/" target="_blank" rel="noopener sponsored">楽天市場で「フローリング 床材」を探す</a>
+<span class="copied" id="copied-flooring"></span>
+</div>
+</div>
+<div class="basis"><h3>計算の根拠・目安</h3>
+<p>必要ケース数 ＝ 施工面積 ×（1＋ロス率）÷ 1ケースの施工面積（切り上げ）。切り欠きや端材が出るため、ロス10%が標準的な目安です。部屋の形が複雑な場合は15%で見積もってください。</p>
+<p>製品ごとに1ケースの施工面積は異なります。数値はすべて目安です。製品ラベルの表示を優先してください。予備として1ケース余分があると、将来の補修にも使えます。</p>
+</div>
+</section>
+
+<!-- 6 タイル -->
+<section class="panel" id="panel-tile">
+<h2>🔲 タイル 必要枚数計算</h2>
+<p class="lead">施工面積とタイルサイズ、目地幅から必要枚数を計算します。</p>
+<div class="grid2">
+<div class="field"><label>施工面積 <span class="unit">㎡</span></label><input type="number" id="tl-area" value="2" step="0.5" min="0" inputmode="decimal"></div>
+<div class="field"><label>タイルサイズ（プリセット）</label><select id="tl-preset">
+<option value="100,100">100角（100×100mm）</option>
+<option value="150,150">150角（150×150mm）</option>
+<option value="300,300" selected>300角（300×300mm）</option>
+<option value="300,600">300×600mm</option>
+<option value="custom">カスタム（下に入力）</option></select></div>
+<div class="field"><label>タイル縦 <span class="unit">mm</span></label><input type="number" id="tl-h" value="300" step="10" min="1" inputmode="decimal"></div>
+<div class="field"><label>タイル横 <span class="unit">mm</span></label><input type="number" id="tl-w" value="300" step="10" min="1" inputmode="decimal"></div>
+<div class="field"><label>目地幅 <span class="unit">mm</span></label><input type="number" id="tl-joint" value="3" step="1" min="0" inputmode="decimal"></div>
+<div class="field"><label>ロス率 <span class="unit">%</span></label><input type="number" id="tl-loss" value="10" step="1" min="0" inputmode="decimal"></div>
+</div>
+<div class="result">
+<h3>計算結果（目安）</h3>
+<div class="rrow"><span class="k">1枚の占有面積（目地込み）</span><span class="v" id="tl-r-unit" style="font-size:16px">–</span></div>
+<div class="rrow"><span class="k">必要枚数</span><span class="v" id="tl-r-count">–</span></div>
+<div class="actions">
+<button class="btn btn-copy" data-copy="tile">📋 買い物メモをコピー</button>
+<a class="btn btn-shop" href="https://search.rakuten.co.jp/search/mall/%E3%82%BF%E3%82%A4%E3%83%AB%20DIY/" target="_blank" rel="noopener sponsored">楽天市場で「タイル DIY」を探す</a>
+<span class="copied" id="copied-tile"></span>
+</div>
+</div>
+<div class="basis"><h3>計算の根拠・目安</h3>
+<p>1枚の占有面積 ＝（タイル縦＋目地幅）×（タイル横＋目地幅）。必要枚数 ＝ 施工面積 ×（1＋ロス率）÷ 占有面積（切り上げ）。</p>
+<p>カットが多い場所や斜め貼りはロスが増えます（15〜20%目安）。割れ予備も含めて多めの購入が安心です。数値はすべて目安です。製品ラベルの表示を優先してください。</p>
+</div>
+</section>
+
+<!-- 7 人工芝 -->
+<section class="panel" id="panel-turf">
+<h2>🌱 人工芝 必要量計算</h2>
+<p class="lead">敷く場所の大きさとロール幅から、必要な巾数・総長・ロール数を計算します。</p>
+<div class="grid2">
+<div class="field"><label>施工地の幅 <span class="unit">m</span></label><input type="number" id="tf-w" value="3" step="0.1" min="0" inputmode="decimal"></div>
+<div class="field"><label>施工地の長さ <span class="unit">m</span></label><input type="number" id="tf-l" value="5" step="0.1" min="0" inputmode="decimal"></div>
+<div class="field"><label>ロール幅</label><select id="tf-rollw"><option value="1">1m</option><option value="2" selected>2m</option></select></div>
+<div class="field"><label>ロール長 <span class="unit">m／本</span></label><input type="number" id="tf-rolll" value="10" step="1" min="1" inputmode="decimal"></div>
+<div class="field"><label>ロス率 <span class="unit">%</span></label><input type="number" id="tf-loss" value="10" step="1" min="0" inputmode="decimal"></div>
+</div>
+<div class="result">
+<h3>計算結果（目安）</h3>
+<div class="rrow"><span class="k">巾数</span><span class="v" id="tf-r-count">–</span></div>
+<div class="rrow"><span class="k">必要な総長（ロス込み）</span><span class="v" id="tf-r-total">–</span></div>
+<div class="rrow"><span class="k">ロール数</span><span class="v" id="tf-r-rolls">–</span></div>
+<div class="actions">
+<button class="btn btn-copy" data-copy="turf">📋 買い物メモをコピー</button>
+<a class="btn btn-shop" href="https://search.rakuten.co.jp/search/mall/%E4%BA%BA%E5%B7%A5%E8%8A%9D%20%E3%83%AD%E3%83%BC%E3%83%AB/" target="_blank" rel="noopener sponsored">楽天市場で「人工芝 ロール」を探す</a>
+<span class="copied" id="copied-turf"></span>
+</div>
+</div>
+<div class="basis"><h3>計算の根拠・目安</h3>
+<p>巾数 ＝ 施工地の幅 ÷ ロール幅（切り上げ）。総長 ＝ 巾数 × 施工地の長さ ×（1＋ロス率）。ロール数 ＝ 総長 ÷ ロール長（切り上げ）。芝の目方向をそろえる前提の計算です。</p>
+<p>継ぎ目が気になる場合は、巾の割り付けを先に図面で確認するのがおすすめです。数値はすべて目安です。製品ラベルの表示を優先してください。防草シートや固定ピンが別途必要な場合があります。</p>
+</div>
+</section>
+
+<!-- 8 漆喰・珪藻土 -->
+<section class="panel" id="panel-plaster">
+<h2>🏺 漆喰・珪藻土 必要量計算</h2>
+<p class="lead">塗る面積と塗り厚から、練り材料の必要キロ数と袋数を計算します。</p>
+<div class="grid2">
+<div class="field"><label>塗る面積 <span class="unit">㎡</span></label><input type="number" id="pl-area" value="15" step="1" min="0" inputmode="decimal"></div>
+<div class="field"><label>材料</label><select id="pl-type"><option value="1.0">珪藻土（1.0kg/㎡/mm）</option><option value="1.2">漆喰（1.2kg/㎡/mm）</option></select></div>
+<div class="field"><label>塗り厚 <span class="unit">mm</span></label><input type="number" id="pl-thick" value="1.5" step="0.5" min="0.1" inputmode="decimal"></div>
+<div class="field"><label>塗り回数</label><input type="number" id="pl-coats" value="1" step="1" min="1" inputmode="decimal"></div>
+<div class="field"><label>ロス率 <span class="unit">%</span></label><input type="number" id="pl-loss" value="10" step="1" min="0" inputmode="decimal"></div>
+<div class="field"><label>1袋の重さ</label><select id="pl-bag"><option value="10">10kg</option><option value="20" selected>20kg</option></select></div>
+</div>
+<div class="result">
+<h3>計算結果（目安）</h3>
+<div class="rrow"><span class="k">必要量</span><span class="v" id="pl-r-kg">–</span></div>
+<div class="rrow"><span class="k">袋数</span><span class="v" id="pl-r-bags">–</span></div>
+<div class="actions">
+<button class="btn btn-copy" data-copy="plaster">📋 買い物メモをコピー</button>
+<a class="btn btn-shop" href="https://search.rakuten.co.jp/search/mall/%E7%8F%AA%E8%97%BB%E5%9C%9F%20%E6%BC%86%E5%96%B0/" target="_blank" rel="noopener sponsored">楽天市場で「珪藻土・漆喰」を探す</a>
+<span class="copied" id="copied-plaster"></span>
+</div>
+</div>
+<div class="basis"><h3>計算の根拠・目安</h3>
+<p>必要量 ＝ 面積 × 原単位（珪藻土 1.0kg/㎡/mm、漆喰 1.2kg/㎡/mm）× 塗り厚 × 塗り回数 ×（1＋ロス率）。</p>
+<p>参考として、18kg入りの製品で「1mm厚・約16㎡」という製品表示の例があります（18 ÷ 16 ÷ 1 ≒ 1.1kg/㎡/mm で、本計算の原単位とほぼ一致します）。下地の状態で使用量は大きく変わります。数値はすべて目安です。購入前に製品ラベルの表示を必ず優先してください。</p>
+</div>
+</section>
+
+<div class="adslot">広告スペース</div>
+
+<section class="textsec">
+<h2>材料計算のコツ</h2>
+<p>DIYでいちばん多い失敗は「あと少し足りない」と「大量に余る」の2つです。共通の考え方はシンプルで、<strong>実面積 → ロスを加える → 販売単位で切り上げる</strong>の3ステップ。ロス率はまっすぐ貼る・塗るだけなら10%、カットや柄合わせが多い作業では15〜20%が目安です。</p>
+<ul>
+<li>測るときは部屋の「一番広いところ」ではなく、壁ごと・面ごとに測る</li>
+<li>同じ製品でもロットで色味が変わることがあるため、予備は同じタイミングで買う</li>
+<li>重い材料（砂利・コンクリート）は送料と運搬も含めて買う場所を決める</li>
+</ul>
+<p>このサイトの計算結果はすべて目安です。最終的には、使う製品のラベルに書かれた塗布量・施工面積・使用量の表示を優先してください。</p>
+</section>
+
+<footer class="site">
+<p>ザイポチは個人が運営する無料の計算ツールです。入力した内容はブラウザ内だけで処理され、サーバーへ送信・保存されることはありません。</p>
+<p>計算結果はすべて目安です。実際の必要量は現場の条件や製品によって異なりますので、購入・施工の際は製品ラベルの表示を優先してください。</p>
+<p>このサイトには広告およびアフィリエイトリンク（楽天市場へのリンク等）が含まれる場合があります。</p>
+<a class="top-link" href="#navgrid" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ 計算機一覧へ戻る</a>
+</footer>
+
+</div>
+
+<script>
+var CALCS=[
+{id:'wallpaper',icon:'🧻',name:'壁紙',kw:'壁紙 必要量 計算'},
+{id:'paint',icon:'🎨',name:'塗料',kw:'塗料 必要量 計算'},
+{id:'gravel',icon:'🪨',name:'砂利',kw:'砂利 必要量 計算'},
+{id:'concrete',icon:'🧱',name:'コンクリート',kw:'コンクリート 袋数 計算'},
+{id:'flooring',icon:'🪵',name:'フローリング',kw:'フローリング ケース数 計算'},
+{id:'tile',icon:'🔲',name:'タイル',kw:'タイル 必要枚数 計算'},
+{id:'turf',icon:'🌱',name:'人工芝',kw:'人工芝 ロール 計算'},
+{id:'plaster',icon:'🏺',name:'漆喰・珪藻土',kw:'珪藻土 漆喰 必要量 計算'}
+];
+var memos={};
+function $(id){return document.getElementById(id)}
+function num(id,def){var v=parseFloat($(id).value);return isNaN(v)?def:v}
+function fmt(n,d){return n.toLocaleString('ja-JP',{minimumFractionDigits:d||0,maximumFractionDigits:d||0})}
+function show(id){
+CALCS.forEach(function(c){
+$('panel-'+c.id).classList.toggle('active',c.id===id);
+});
+document.querySelectorAll('.navcard').forEach(function(b){b.classList.toggle('active',b.dataset.id===id)});
+}
+var nav=$('navgrid');
+CALCS.forEach(function(c){
+var b=document.createElement('button');
+b.className='navcard';b.dataset.id=c.id;
+b.innerHTML='<div class="ic">'+c.icon+'</div><div class="nm">'+c.name+'</div><div class="kw">'+c.kw+'</div>';
+b.addEventListener('click',function(){show(c.id);$('panel-'+c.id).scrollIntoView({behavior:'smooth',block:'start'})});
+nav.appendChild(b);
+});
+
+/* 1 壁紙 */
+function calcWallpaper(){
+var w=num('wp-w',0),d=num('wp-d',0),h=num('wp-h',2.4);
+var total=parseFloat($('wp-total').value);
+var perim=!isNaN(total)&&total>0?total:2*(w+d);
+var ww=parseFloat($('wp-width').value),loss=num('wp-loss',10)/100,roll=num('wp-roll',50);
+var cnt=Math.ceil(perim/ww),len=h+0.1,m=cnt*len*(1+loss),rolls=Math.ceil(m/roll);
+$('wp-r-perim').innerHTML=fmt(perim,1)+' <small>m</small>';
+$('wp-r-count').innerHTML=fmt(cnt)+' <small>巾</small>';
+$('wp-r-len').innerHTML=fmt(len,2)+' <small>m</small>';
+$('wp-r-m').innerHTML=fmt(m,1)+' <small>m</small>';
+$('wp-r-roll').innerHTML=fmt(rolls)+' <small>本（'+fmt(roll)+'m巻）</small>';
+memos.wallpaper='壁紙\n壁の周長：'+fmt(perim,1)+'m／巾数：'+cnt+'巾／必要量：'+fmt(m,1)+'m（ロス'+fmt(loss*100)+'%込み）／ロール：'+rolls+'本';
+}
+/* 2 塗料 */
+function calcPaint(){
+var area=num('pt-area',0),coats=parseInt($('pt-coats').value);
+var t=$('pt-type').value,cov=t==='custom'?num('pt-custom',8):parseFloat(t);
+var L=area/cov*coats;
+var sizes=[14,7,3,1.6,0.7],rem=L,cans=[];
+sizes.forEach(function(s,i){
+if(i===sizes.length-1){if(rem>0){var n=Math.ceil(rem/s-1e-9);if(n>0)cans.push(s+'L×'+n)}return}
+var n=Math.floor(rem/s);if(n>0){cans.push(s+'L×'+n);rem-=n*s}
+});
+$('pt-r-l').innerHTML=fmt(L,1)+' <small>L</small>';
+$('pt-r-cans').textContent=cans.length?cans.join(' ＋ '):'–';
+memos.paint='塗料\n面積：'+fmt(area)+'㎡／'+coats+'回塗り／必要量：'+fmt(L,1)+'L／缶目安：'+cans.join(' + ');
+}
+/* 3 砂利 */
+function calcGravel(){
+var area=num('gv-area',0),th=num('gv-thick',5)/100,den=parseFloat($('gv-density').value),bag=num('gv-bag',20);
+var vol=area*th,kg=vol*den,bags=Math.ceil(kg/bag);
+$('gv-r-vol').innerHTML=fmt(vol,2)+' <small>㎥</small>';
+$('gv-r-kg').innerHTML=fmt(kg)+' <small>kg（約'+fmt(kg/1000,1)+'t）</small>';
+$('gv-r-bags').innerHTML=fmt(bags)+' <small>袋（'+fmt(bag)+'kg袋）</small>';
+memos.gravel='砂利\n面積：'+fmt(area)+'㎡／厚み：'+fmt(th*100)+'cm／必要量：'+fmt(kg)+'kg／'+fmt(bag)+'kg袋×'+bags+'袋';
+}
+/* 4 コンクリート */
+function calcConcrete(){
+var l=num('cc-l',0),w=num('cc-w',0),t=num('cc-t',10)/100,y=num('cc-yield',13);
+var m3=l*w*t,lit=m3*1000,bags=Math.ceil(lit*1.1/y);
+$('cc-r-m3').innerHTML=fmt(m3,2)+' <small>㎥</small>';
+$('cc-r-l').innerHTML=fmt(lit)+' <small>L</small>';
+$('cc-r-bags').innerHTML=fmt(bags)+' <small>袋（25kg袋）</small>';
+memos.concrete='コンクリート\n体積：'+fmt(m3,2)+'㎥（'+fmt(lit)+'L）／インスタントコンクリート25kg袋×'+bags+'袋（ロス10%込み）';
+}
+/* 5 フローリング */
+function calcFlooring(){
+var area=num('fl-area',0),cs=num('fl-case',3.3),loss=num('fl-loss',10)/100;
+var need=area*(1+loss),cases=Math.ceil(need/cs);
+$('fl-r-area').innerHTML=fmt(need,1)+' <small>㎡</small>';
+$('fl-r-cases').innerHTML=fmt(cases)+' <small>ケース</small>';
+memos.flooring='フローリング\n施工面積：'+fmt(area,1)+'㎡／必要：'+cases+'ケース（1ケース'+fmt(cs,1)+'㎡、ロス'+fmt(loss*100)+'%込み）';
+}
+/* 6 タイル */
+function calcTile(){
+var area=num('tl-area',0),h=num('tl-h',300),w=num('tl-w',300),j=num('tl-joint',3),loss=num('tl-loss',10)/100;
+var unit=(h+j)*(w+j)/1000000,cnt=Math.ceil(area*(1+loss)/unit);
+$('tl-r-unit').textContent=fmt(unit,4)+' ㎡／枚';
+$('tl-r-count').innerHTML=fmt(cnt)+' <small>枚</small>';
+memos.tile='タイル\n施工面積：'+fmt(area,1)+'㎡／タイル：'+fmt(h)+'×'+fmt(w)+'mm・目地'+fmt(j)+'mm／必要枚数：'+cnt+'枚（ロス'+fmt(loss*100)+'%込み）';
+}
+/* 7 人工芝 */
+function calcTurf(){
+var w=num('tf-w',0),l=num('tf-l',0),rw=parseFloat($('tf-rollw').value),rl=num('tf-rolll',10),loss=num('tf-loss',10)/100;
+var cnt=Math.ceil(w/rw),total=cnt*l*(1+loss),rolls=Math.ceil(total/rl);
+$('tf-r-count').innerHTML=fmt(cnt)+' <small>巾</small>';
+$('tf-r-total').innerHTML=fmt(total,1)+' <small>m</small>';
+$('tf-r-rolls').innerHTML=fmt(rolls)+' <small>本（'+fmt(rl)+'mロール）</small>';
+memos.turf='人工芝\n施工地：'+fmt(w,1)+'×'+fmt(l,1)+'m／巾数：'+cnt+'巾／総長：'+fmt(total,1)+'m／ロール：'+rolls+'本';
+}
+/* 8 漆喰・珪藻土 */
+function calcPlaster(){
+var area=num('pl-area',0),u=parseFloat($('pl-type').value),th=num('pl-thick',1.5),coats=num('pl-coats',1),loss=num('pl-loss',10)/100,bag=parseFloat($('pl-bag').value);
+var kg=area*u*th*coats*(1+loss),bags=Math.ceil(kg/bag);
+$('pl-r-kg').innerHTML=fmt(kg,1)+' <small>kg</small>';
+$('pl-r-bags').innerHTML=fmt(bags)+' <small>袋（'+fmt(bag)+'kg袋）</small>';
+memos.plaster='漆喰・珪藻土\n面積：'+fmt(area)+'㎡／塗り厚：'+fmt(th,1)+'mm／必要量：'+fmt(kg,1)+'kg／'+fmt(bag)+'kg袋×'+bags+'袋';
+}
+
+var all=[calcWallpaper,calcPaint,calcGravel,calcConcrete,calcFlooring,calcTile,calcTurf,calcPlaster];
+function recalc(){all.forEach(function(f){f()})}
+document.querySelectorAll('input,select').forEach(function(el){el.addEventListener('input',recalc);el.addEventListener('change',recalc)});
+$('tl-preset').addEventListener('change',function(){
+if(this.value!=='custom'){var p=this.value.split(',');$('tl-h').value=p[0];$('tl-w').value=p[1];recalc()}
+});
+document.querySelectorAll('[data-copy]').forEach(function(btn){
+btn.addEventListener('click',function(){
+var key=btn.dataset.copy,text=memos[key]||'';
+var done=function(){$('copied-'+key).textContent='コピーしました ✓';setTimeout(function(){$('copied-'+key).textContent=''},2500)};
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done).catch(function(){fallback()})}else{fallback()}
+function fallback(){var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(ta)}
+});
+});
+recalc();show('wallpaper');
+</script>
+</body>
+</html>
